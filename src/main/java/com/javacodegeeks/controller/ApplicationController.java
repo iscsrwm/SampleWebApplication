@@ -5,6 +5,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping("/")
@@ -23,4 +26,21 @@ public class ApplicationController {
 
       return "index";
    }
+
+  @RequestMapping(value = "/SessRepl", method = RequestMethod.GET)
+  public String SessRepl(ModelMap model) {
+
+	// get session id create automatically by load balancer
+	String ssId = RequestContextHolder.currentRequestAttributes()
+			.getSessionId();
+	// get date, month, year, hour, minute, second, and millisecond
+	String currDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:SSS")
+			.format(new Date());
+	model.addAttribute("msgArgument",
+			"Maven Java Web Application Project: Success! Session id is "
+					+ ssId + " current date is " + currDate);
+
+	return "index";
+  }
+
 }
